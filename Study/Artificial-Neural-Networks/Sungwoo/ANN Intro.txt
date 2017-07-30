@@ -1,7 +1,0 @@
-What is Deep Learning?
-
-Install Python
-
-How to get the dataset
-
-BONUS : Meet your Instructors
