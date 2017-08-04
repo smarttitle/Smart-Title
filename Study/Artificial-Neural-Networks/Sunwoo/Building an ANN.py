@@ -59,3 +59,34 @@ classifier.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accur
 # Fitting classifier to the Training set
 
 classifier.fit(X_train, y_train, batch_size=10, epochs=100)
+
+# Part 3 - Making the predictions and evaluating the model
+
+# HW_X_test = np.ndarray(shape=(1,11), dtype=float)
+# HW_X_test[0] = X_test[1000]
+
+# Predicting the Test set results
+y_pred = classifier.predict(X_test)
+y_pred = (y_pred > 0.5)
+
+
+""" Predict if the customer with the following informations will leave the bank
+Geography : France
+Credit Score : 600
+Gender : Male
+Age : 40
+Tenure : 3
+Balance : 60000
+Number of Products : 2
+Has Credit Card : Yes
+Is Active Member : Yes
+Estimate Salary : 50000
+"""
+
+new_prediction = classifier.predict(sc.transform(np.array([[0.0,0,600,1,40,3,60000,2,1,1,50000]])))
+new_prediction = (new_prediction > 0.5)
+
+# Making the Confusion Matrix
+from sklearn.metrics import confusion_matrix
+
+cm = confusion_matrix(y_test, y_pred)
