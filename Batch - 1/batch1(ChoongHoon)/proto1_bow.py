@@ -250,18 +250,7 @@ def classify(sentence, show_details=False):
     print ("%s \n classification: %s" % (sentence, return_results))
     return return_results
 
-classify("sudo make me a sandwich")
-classify("how are you today?")
-classify("talk to you tomorrow")
-classify("who are you?")
-classify("make me some lunch")
-classify("how was your lunch today?")
-print()
-classify("good day", show_details=True)
-classify("See you tomorrow")
-classify("Nice to see you")
-classify("make me burrito")
-classify("To be a good basketball player you need to practice hard")
+
 classify(X[33])
 for i in range(333):
     classify(X[i]),
@@ -302,11 +291,6 @@ The D3O team has also worked extensively with the US and UK defense forces, poli
 Antolini said the company first started looking at how to protect soldiers from impacts and improve everything from their shoes to the padding on their knees, elbows and shoulders -- so that those in combat could hold their positions without becoming uncomfortable.
 She added: "While we don't have a material that can stop a bullet, we do have a material that can reduce the amount of trauma that your body would experience if you got shot."
 ''')
-classify("good day")
-classify("business monet tax income apple stock samsung google pay paygrade music income snack orange drink pen laptop")
-classify("You want some sandwich?")
-classify("Basketball is fun")
-classify("I am good at basketball")
 
 cnn_paper = newspaper.build('http://cnn.com',memoize_articles=False)
 
@@ -314,14 +298,14 @@ news_list = []
 ans_list=[]
 url_list=[]
 for article in cnn_paper.articles:
-    if(article.url.find("business")!=-1):
+    if(article.url.find("tech")!=-1):
         article.download()
         article.parse()
         print(article)
         article.text
         url_list.append(article.url)
         news_list.append(article.text)
-        ans_list.append("business")
+        ans_list.append("tech")
         
 for i in news_list:
     classify(i)
