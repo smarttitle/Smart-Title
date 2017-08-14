@@ -11,13 +11,15 @@ from os.path import join
 from nltk import word_tokenize
 from nltk.stem import PorterStemmer
 from nltk.corpus import stopwords
+from sklearn.feature_extraction.text import TfidfVectorizer
+import numpy as np
 import re
+
 
 # pre-process word dictionary (cleaning non-important words, stemming, stopwords, etc)
 def process_words(text):
     text = [word for word in re.split("\W+", text)]
-    
-    
+
     stop_words = stopwords.words('english')
     stopped_text = []
     for word in text:
@@ -27,12 +29,16 @@ def process_words(text):
     
     ps = PorterStemmer()
     stemmed = [ps.stem(w) for w in stopped_text]
-
-    return stemmed
+    text = " ".join(stemmed)
+    return text
 
 def has_Number(s):
     return any(i.isdigit() for i in s)
 
+def tokenizer(text):
+    tokens = word_tokenize(text)
+    return tokens
+    
 
 # importing text files from bbc dataset
 categories = ['business', 'entertainment', 'politics', 'sport', 'tech']
@@ -41,14 +47,24 @@ word_dict = {}
 for category in categories:
     path = "/Users/Sanghun_Kim/Dropbox/Work/SmartTitle/Code/batch1/bbc-fulltext/bbc/" + category
     files = listdir(path)
+    token_dict = {}
     for file in files:
         file_path = join(path, file)
         with open(file_path, 'r', encoding="ISO-8859-1") as f:
             content = f.read().strip()
-            processed_content = process_words(content)
-            if category in word_dict.keys():
-                for token in processed_content:
-                    word_dict[category].append(token)
-            else:
-                word_dict[category] = processed_content
+            processed = process_words(content)
+            
+            token_dict[file] = processed
+    
+    word_dict[category] = token_dict
 
+
+tfvectorizer = TfidfVectorizer(tokenizer= tokenizer, encoding='utf-8', stop_words='english', lowercase=True)
+tfidf_dict = {}
+vocab_dict = {}
+for category in categories:
+    tfidf_dict[category] = tfvectorizer.fit_transform(word_dict[category].values())
+    vocab_dict[category] = tfvectorizer.vocabulary_
+
+
+print(tfidf_dict['business'])
