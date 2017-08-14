@@ -58,13 +58,25 @@ for category in categories:
     
     word_dict[category] = token_dict
 
+# Calculating TF-IDF scores 
+tfidf_dict = {}
+keyword_dict = {}
 
 tfvectorizer = TfidfVectorizer(tokenizer= tokenizer, encoding='utf-8', stop_words='english', lowercase=True)
-tfidf_dict = {}
-vocab_dict = {}
+
 for category in categories:
     tfidf_dict[category] = tfvectorizer.fit_transform(word_dict[category].values())
-    vocab_dict[category] = tfvectorizer.vocabulary_
-
-
-print(tfidf_dict['business'])
+    
+    # Sorting scores and mapping top 10 keywords to keyword_dict by corresponding categories
+    for i in range(0, len(word_dict[category])):
+        scores = tfidf_dict[category][i]
+        feature_array = np.array(tfvectorizer.get_feature_names())   
+        score_sorted = np.argsort(scores.toarray().flatten())[::-1]
+        
+        n = 10
+        top_n = list(feature_array[score_sorted][:n])
+        
+        if category in keyword_dict.keys():
+            keyword_dict[category].append(top_n)
+        else:
+            keyword_dict[category] = [top_n]
