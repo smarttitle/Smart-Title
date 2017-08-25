@@ -1,6 +1,6 @@
 import tensorflow as tf
 import numpy as np
-
+from gensim.models import Word2Vec
 
 class TextCNN(object):
     """
