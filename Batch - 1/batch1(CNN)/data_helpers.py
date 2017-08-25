@@ -42,7 +42,7 @@ def clean_str(string):
 
     lowered_list = [a.lower() for a in string]
 
-    string = lowered_list;
+    string = lowered_list
 
     stop_words = stopwords.words('english')
     stopped_text = []
