@@ -26,8 +26,11 @@ pip install pickle
 ```
 
 ## Run
-You should run batch1_SH(Ver.2).py file.<br>
-<Powershell command>
+You should run batch1_SH(Ver.2).py file.
+
+<b>Powershell command</b>
 ```
 python batch1_SH(Ver.2).py
 ```
+###### * Note that text_dict.p is pickle file and processed in the word_to_vec(SH).py 
+###### * word2vec_lookup_table is saved once word-lookup table is built.
