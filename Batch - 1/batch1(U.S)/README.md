@@ -26,8 +26,8 @@ pip install pickle
 ```
 
 ## Run
-You should run batch1_SH(Ver.2).py file.
-<b>Powershell command<b><br>
+You should run batch1_SH(Ver.2).py file.<br>
+<Powershell command>
 ```
 python batch1_SH(Ver.2).py
 ```
