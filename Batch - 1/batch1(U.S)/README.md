@@ -12,10 +12,11 @@ pickle
 '''
 
 ### Installing
-'''
+
+```
 nltk
 pip install nltk
-'''
+```
 
 '''
 pip install gensim
