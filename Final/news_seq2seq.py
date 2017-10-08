@@ -3,6 +3,9 @@ import numpy as np
 import tool as tool
 import time
 
+tf.sys.setrecursionlimit(10000) # avoid dropout error 라네요
+
+
 # data loading
 data_path = 'C:/newscorpus.csv'
 title, contents = tool.loading_data(data_path, eng=False, num=False, punc=False)
@@ -14,8 +17,8 @@ forward_only = False
 hidden_size = 300
 vocab_size = len(ix_to_word)
 num_layers = 3
-learning_rate = 0.001
-batch_size = 16
+learning_rate = 0.01
+batch_size = 32
 encoder_size = 100
 decoder_size = tool.check_doclength(title,sep=True) # (Maximum) number of time steps in this batch
 steps_per_checkpoint = 10
@@ -51,8 +54,16 @@ class seq2seq(object):
 
         # models
         if multi:
-            single_cell = tf.nn.rnn_cell.GRUCell(num_units=hidden_size)
-            cell = tf.nn.rnn_cell.MultiRNNCell([single_cell] * num_layers)
+
+            cell = tf.nn.rnn_cell.LSTMCell(num_units = hidden_size)
+            input_dropout = 0.1
+            output_dropout = 0.1
+            cell = tf.nn.rnn_cell.DropoutWrapper(cell, input_keep_prob=input_dropout, output_keep_prob=output_dropout)
+            cell = tf.nn.rnn_cell.MultiRNNCell([cell] * num_layers)
+
+           # single_cell = tf.nn.rnn_cell.LSTMCell(num_units=hidden_size)
+           # cell = tf.nn.rnn_cell.MultiRNNCell([single_cell] * num_layers)
+
         else:
             cell = tf.nn.rnn_cell.GRUCell(num_units=hidden_size)
             #cell = tf.nn.rnn_cell.LSTMCell(num_units=hidden_size)
@@ -72,7 +83,10 @@ class seq2seq(object):
                 crossentropy = tf.nn.sparse_softmax_cross_entropy_with_logits(logit, target)
                 self.loss.append(crossentropy * target_weight)
             self.cost = tf.nn.math_ops.add_n(self.loss)
-            self.train_op = tf.train.AdamOptimizer(learning_rate).minimize(self.cost)
+            self.train_op = tf.train.RMSPropOptimizer(learning_rate=learning_rate,decay=0.9,momentum = 0.9).minimize(self.cost)
+
+
+            # self.train_op = tf.train.AdamOptimizer(learning_rate).minimize(self.cost)
 
 
         else:
