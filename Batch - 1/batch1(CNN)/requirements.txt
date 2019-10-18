@@ -18,7 +18,7 @@ lxml==3.8.0
 Markdown==2.6.8
 matplotlib==2.0.2
 newspaper3k==0.2.2
-nltk==3.2.4
+nltk==3.4.5
 numpy==1.13.1
 olefile==0.44
 pandas==0.20.3
